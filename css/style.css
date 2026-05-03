@@ -537,3 +537,17 @@ span {
     }
 }
 
+@media (max-width: 768px) {
+    html {
+        font-size: 55%; 
+    }
+    
+    .header {
+        padding: 2rem 3%; 
+    }
+
+    section {
+        padding: 5rem 3% 2rem; 
+    }
+}
+
