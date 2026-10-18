@@ -1,9 +1,14 @@
 
-/* MOBILE NAVIGATION */
+/* ================= MOBILE NAVIGATION ================= */
 
 const menuIcon = document.querySelector('#menu-icon');
 const navbar = document.querySelector('.navbar');
 const navLinks = document.querySelectorAll('.navbar a');
+
+function closeMenu() {
+    navbar.classList.remove('active');
+    menuIcon.setAttribute('name', 'menu-outline');
+}
 
 menuIcon.addEventListener('click', () => {
     navbar.classList.toggle('active');
@@ -16,18 +21,44 @@ menuIcon.addEventListener('click', () => {
     );
 });
 
-/* CLOSE MOBILE MENU WHEN LINK IS CLICKED */
+/* CLOSE MENU AFTER CLICKING A NAVIGATION LINK */
 
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        navbar.classList.remove('active');
-        menuIcon.setAttribute('name', 'menu-outline');
+    link.addEventListener('click', closeMenu);
+});
+
+/* ================= MOBILE PROJECT TAP ================= */
+
+const projectCards = document.querySelectorAll('.projects-box');
+
+projectCards.forEach(card => {
+    card.addEventListener('click', function(event) {
+
+        // Only apply tap behaviour on touch/mobile devices
+        if (window.matchMedia('(hover: none)').matches) {
+
+            // Close other project cards
+            projectCards.forEach(otherCard => {
+                if (otherCard !== card) {
+                    otherCard.classList.remove('project-active');
+                }
+            });
+
+            // Toggle selected project
+            card.classList.toggle('project-active');
+
+            // Prevent GitHub link clicks from toggling the card
+            if (event.target.closest('a')) {
+                card.classList.add('project-active');
+            }
+        }
     });
 });
 
-/* ACTIVE NAVIGATION LINK ON SCROLL */
+/* ================= ACTIVE NAVIGATION ================= */
 
 const sections = document.querySelectorAll('section');
+const header = document.querySelector('.header');
 
 function updateNavigation() {
     const scrollPosition = window.scrollY;
@@ -51,15 +82,12 @@ function updateNavigation() {
         }
     });
 
-    /* STICKY HEADER */
-
-    const header = document.querySelector('.header');
     header.classList.toggle('sticky', scrollPosition > 100);
 }
 
 window.addEventListener('scroll', updateNavigation);
 
-/* SCROLL REVEAL */
+/* ================= SCROLL REVEAL ================= */
 
 if (typeof ScrollReveal !== 'undefined') {
     ScrollReveal({
@@ -87,7 +115,7 @@ if (typeof ScrollReveal !== 'undefined') {
     });
 }
 
-/* TYPED TEXT ANIMATION */
+/* ================= TYPED TEXT ANIMATION ================= */
 
 if (typeof Typed !== 'undefined') {
     new Typed('.multiple-text', {

@@ -717,12 +717,15 @@ span {
 
 /* TOUCH DEVICES: MAKE PROJECT DETAILS ACCESSIBLE */
 
+
 @media (hover: none) {
     .projects-box .projects-layer {
+        transform: translateY(100%);
+    }
+
+    .projects-box.project-active .projects-layer {
         transform: translateY(0);
-        background: linear-gradient(
-            rgba(0, 20, 30, .82),
-            rgba(0, 100, 120, .88)
-        );
     }
 }
+
+
