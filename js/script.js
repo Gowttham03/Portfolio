@@ -1,77 +1,100 @@
-/*====================== toogle icon navbar =======================*/
-let menuIcon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
 
-menuIcon.onclick = () => {
+/* MOBILE NAVIGATION */
+
+const menuIcon = document.querySelector('#menu-icon');
+const navbar = document.querySelector('.navbar');
+const navLinks = document.querySelectorAll('.navbar a');
+
+menuIcon.addEventListener('click', () => {
     navbar.classList.toggle('active');
 
-    if (menuIcon.getAttribute('name') === 'menu-outline') {
-        menuIcon.setAttribute('name', 'close-outline');
-    } else {
+    const isOpen = navbar.classList.contains('active');
+
+    menuIcon.setAttribute(
+        'name',
+        isOpen ? 'close-outline' : 'menu-outline'
+    );
+});
+
+/* CLOSE MOBILE MENU WHEN LINK IS CLICKED */
+
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        navbar.classList.remove('active');
         menuIcon.setAttribute('name', 'menu-outline');
-    }
-};
+    });
+});
 
+/* ACTIVE NAVIGATION LINK ON SCROLL */
 
-/*====================== scroll sections active link =======================*/
-let sections = document.querySelectorAll('section');
-let navLinks = document.querySelectorAll('header nav a');
+const sections = document.querySelectorAll('section');
 
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
+function updateNavigation() {
+    const scrollPosition = window.scrollY;
 
-        if (top >= offset && top < offset + height) {
-            navLinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
-            });    
-        };   
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const sectionId = section.getAttribute('id');
 
-    });       
+        if (
+            scrollPosition >= sectionTop &&
+            scrollPosition < sectionBottom
+        ) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
 
-    /*====================== sticky navbar =======================*/
-    let header = document.querySelector('header');
-
-    header.classList.toggle('sticky',window.scrollY > 100);
-
-    /*====================== remove toogle icon and navbar when click navbar link (scroll) =======================*/
-    navbar.classList.remove('active');
-    menuIcon.setAttribute('name', 'menu-outline');
-};
-
-    /*====================== remove toogle icon and navbar when click navbar link (scroll) =======================*/
-    navLinks.forEach(link => {
-        link.onclick = () => {
-            navbar.classList.remove('active');
-            menuIcon.setAttribute('name', 'menu-outline');
-        };
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
     });
 
+    /* STICKY HEADER */
 
-/*====================== scroll reveal =======================*/
+    const header = document.querySelector('.header');
+    header.classList.toggle('sticky', scrollPosition > 100);
+}
 
-ScrollReveal({
-  reset: true,
-  distance: '80px',
-  duration: 2000,
-  delay: 200
-});
+window.addEventListener('scroll', updateNavigation);
 
-ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img, .skills-container, projects-box, .contact form', { origin: 'bottom' });
-ScrollReveal().reveal('.home-content h1, .about-img', { origin: 'left' });
-ScrollReveal().reveal('.home-content p, .about-content', { origin: 'right' });
+/* SCROLL REVEAL */
 
+if (typeof ScrollReveal !== 'undefined') {
+    ScrollReveal({
+        reset: false,
+        distance: '80px',
+        duration: 1800,
+        delay: 150
+    });
 
-/*====================== typed js =======================*/
-  const typed = new Typed('.multiple-text', {
-  strings: ['Data Analyst', 'Business Analyst'],
-  typeSpeed: 100,
-  backSpeed: 100,
-  backDely: 1000,
-  loop: true
-});
+    ScrollReveal().reveal('.home-content, .heading', {
+        origin: 'top'
+    });
+
+    ScrollReveal().reveal(
+        '.home-img, .skills-container, .projects-box, .contact form',
+        { origin: 'bottom' }
+    );
+
+    ScrollReveal().reveal('.home-content h1, .about-img', {
+        origin: 'left'
+    });
+
+    ScrollReveal().reveal('.home-content p, .about-content', {
+        origin: 'right'
+    });
+}
+
+/* TYPED TEXT ANIMATION */
+
+if (typeof Typed !== 'undefined') {
+    new Typed('.multiple-text', {
+        strings: ['Data Analyst', 'Business Analyst'],
+        typeSpeed: 100,
+        backSpeed: 100,
+        backDelay: 1000,
+        loop: true
+    });
+}
